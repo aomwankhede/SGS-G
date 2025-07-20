@@ -55,7 +55,7 @@ const AdminDashboard = () => {
     window.open(url, '_blank');
   };
 
-  const verifiedDonations = donars.filter((d) => d.status === 'Verified');
+  const verifiedDonations = donars.filter((d) => d.status === true)
   const totalVerifiedAmount = verifiedDonations.reduce(
     (sum, d) => sum + d.amount,
     0

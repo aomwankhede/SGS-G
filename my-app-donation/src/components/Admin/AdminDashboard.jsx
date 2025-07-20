@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import path from "path"
 
-axios.defaults.baseURL = 'http://localhost:5000';
+// axios.defaults.baseURL = 'http://localhost:5000';
+axios.defaults.baseURL = 'https://sgs-2jrp.onrender.com';
 
 const AdminDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -37,9 +38,8 @@ const AdminDashboard = () => {
     setFilteredDonars(filtered);
   }, [searchTerm, donars]);
 
-
+  // Handle donation verification
   const handleVerify = async (id) => {
-    alert("Are you sure you want to verify this donation");
     try {
       await axios.put(`/donations/${id}/verify`);
       const updated = donars.map((d) =>
@@ -56,7 +56,7 @@ const AdminDashboard = () => {
     const extensions = ['png', 'jpg', 'jpeg'];
 
     for (let ext of extensions) {
-      const url = `http://localhost:5000/uploads/${transactionId}.${ext}`;
+      const url = `${axios.defaults.baseURL}/uploads/${transactionId}.${ext}`;
       try {
         const response = await fetch(url, { method: 'HEAD' });
         if (response.ok) {
@@ -160,7 +160,6 @@ const AdminDashboard = () => {
 
             {/* Action Buttons */}
             <div className="flex gap-3 items-end">
-              
               {!donar.isVerified && (
                 <button
                   onClick={() => handleVerify(donar._id)}

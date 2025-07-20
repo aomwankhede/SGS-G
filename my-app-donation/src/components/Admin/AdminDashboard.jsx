@@ -122,14 +122,14 @@ const AdminDashboard = () => {
           <div
             key={donar._id}
             className={`w-full 
-            ${donar.isVerified === true ? 'from-green-500' : 'from-red-500'} 
+            ${donar.isVerified === true ? 'from-green-500 to-transparent' : 'from-red-500 to-transparent'} 
             to-white bg-gradient-to-br text-white rounded-2xl p-6 shadow-lg 
             flex justify-between items-center mb-6`}
           >
             {/* Donor Info Section */}
             <div>
               <h1 className="text-2xl font-semibold">{donar.name}</h1>
-              <div className="mt-4 space-y-1 text-sm text-zinc-300">
+              <div className="mt-4 space-y-1 text-sm text-zinc-600">
                 <p>
                   📞 Mobile: <span className="text-white">{donar.mobile}</span>
                 </p>
@@ -152,8 +152,8 @@ const AdminDashboard = () => {
                   </span>
                 </p> */}
                 <p>
-                  Transaction Id:{''}
-                  <span className="text-white">{donar.transactionId}</span>
+                 🧾Transaction Id:{''}
+                  <span className="text-white font-extrabold text-2xl">{donar.transactionId}</span>
                 </p>
               </div>
             </div>

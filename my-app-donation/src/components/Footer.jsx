@@ -13,29 +13,29 @@ const Footer = () => {
             <span className="text-lg font-bold">SGS</span>
           </div>
           <p className="mb-4 max-w-xs">
-            Empowering physicians with advanced multi-modal tools to improve treatment selection and patient outcomes.
+            Ganpati Bappa Morya, Mangal Murti Morya.
+            Greating Community with a NOBLE cause.
+            Om Ganeshay Namah.
           </p>
           <div className="flex gap-4 text-white text-lg">
             <FontAwesomeIcon icon={faXTwitter} />
             <FontAwesomeIcon icon={faFacebook} />
             <FontAwesomeIcon icon={faInstagram} />
           </div>
-          <button className="mt-6 border border-white px-4 py-2 rounded-md text-sm hover:bg-white hover:text-[#0F3B36] transition">
-            ↑ Back to Top
-          </button>
+          <a href="#navbar">
+            <button className="mt-6 border border-white px-4 py-2 rounded-md text-sm hover:bg-white hover:text-[#0F3B36] transition">
+              ↑ Back to Top
+           </button>
+          </a>
         </div>
 
         {/* Site Map */}
         <div>
           <h3 className="font-semibold mb-2">Site Map</h3>
           <ul className="space-y-1 text-sm">
-            <li>Homepage</li>
-            <li>Technology</li>
-            <li>Ataraxis Breast</li>
-            <li>Resources & news</li>
-            <li>Careers</li>
-            <li>Contact Us</li>
-            <li>Portal</li>
+            <a href='#homepage'><li>Homepage</li></a>
+            <a href='#homepage'><li>Contact</li></a>
+            <li>QR CODE</li>
           </ul>
         </div>
 

@@ -117,7 +117,7 @@ const AdminDashboard = () => {
           <div
             key={donar._id}
             className={`w-full 
-            ${donar.status === true ? 'from-green-500' : 'from-red-500'} 
+            ${donar.isVerified === true ? 'from-green-500' : 'from-red-500'} 
             to-white bg-gradient-to-br text-white rounded-2xl p-6 shadow-lg 
             flex justify-between items-center mb-6`}
           >

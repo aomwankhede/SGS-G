@@ -21,7 +21,7 @@ const AdminDashboard = () => {
       .get('/donations')
       .then((res) => {
         setDonar(res.data);
-        setFilteredDonars(res.data?.filter((donation)=>donation.isVerified));
+        setFilteredDonars(res.data?.filter((donation) => donation.isVerified));
       })
       .catch((err) => console.error('Error fetching donations:', err));
   }, []);
@@ -43,7 +43,7 @@ const AdminDashboard = () => {
     try {
       await axios.put(`/donations/${id}/verify`);
       const updated = donars.map((d) =>
-        d._id === id ? { ...d, isVerified:true } : d
+        d._id === id ? { ...d, isVerified: true } : d
       );
       setDonar(updated);
       setFilteredDonars(updated);
@@ -52,23 +52,24 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleView = (transactionId) => {
-   
-    const extensions = ['.png', '.jpg', '.jpeg', '.webp'];
+  const handleView = async (transactionId) => {
+    const extensions = ['png', 'jpg', 'jpeg'];
 
-    for (const ext of extensions) {
-      const filePath = path.join(imageDir, `${transactionId}${ext}`);
-      while (!fs.existsSync(filePath)) {
-        return `${baseURL}/uploads/${transactionId}${ext}`;
+    for (let ext of extensions) {
+      const url = `http://localhost:5000/uploads/${transactionId}.${ext}`;
+      try {
+        const response = await fetch(url, { method: 'HEAD' });
+        if (response.ok) {
+          window.open(url, '_blank');
+          return;
+        }
+      } catch (error) {
+        console.error(`Error checking file ${url}:`, error);
       }
     }
-    window.open(url, '_blank');
-  }
-   
-    
-  
 
- 
+    alert('No image found for this transaction.');
+  };
 
   const verifiedDonations = donars.filter((d) => d.isVerified);
   const totalVerifiedAmount = verifiedDonations.reduce(
@@ -163,9 +164,7 @@ const AdminDashboard = () => {
                 </p> */}
                 <p>
                   Transaction Id:{''}
-                  <span className='text-white'>
-                    {donar.transactionId}
-                  </span>
+                  <span className="text-white">{donar.transactionId}</span>
                 </p>
               </div>
             </div>

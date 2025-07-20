@@ -93,17 +93,6 @@ const AdminDashboard = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           value={searchTerm}
         />
-        <select className="px-4 py-2 rounded-lg bg-white/10 backdrop-blur-sm text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30 appearance-none">
-          <option className="bg-purple-700 text-white rounded-3xl">
-            All Status
-          </option>
-          <option className="bg-purple-700 text-white rounded-3xl">
-            Verified
-          </option>
-          <option className="bg-purple-700 text-white rounded-3xl">
-            Pending
-          </option>
-        </select>
       </div>
 
       {/* Stats */}
@@ -186,15 +175,6 @@ const AdminDashboard = () => {
               >
                 👁️ View
               </button>
-
-              {donar.isVerified && (
-                <button
-                  onClick={() => handleSendPDF(donar?.email)}
-                  className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-xl shadow-md transition"
-                >
-                  📩 Send PDF
-                </button>
-              )}
             </div>
           </div>
         ))}

@@ -18,8 +18,19 @@ const DonationForm = () => {
     transactionImage: null
   });
   const [donarData,setDonorData] = useState({});
+  const [errors, setErrors] = useState({ mobile: '' });
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+    if (name === 'mobile') {
+      const isValidMobile = /^\d{10}$/.test(value);
+      if (!isValidMobile) {
+        setErrors({ ...errors, mobile: 'Mobile number must be exactly 10 digits' });
+      } else {
+        setErrors({ ...errors, mobile: '' });
+      }
+    }
+
     if (name === 'transactionImage') {
       setFormData({ ...formData, transactionImage: files[0] });
     } else {
@@ -79,11 +90,14 @@ const DonationForm = () => {
           <div>
             <label className="block text-sm mb-1">Mobile Number *</label>
             <input name="mobile" type="text" onChange={handleChange} className="w-full p-2 rounded-md bg-purple-700 text-white border border-purple-600" placeholder="+91 9876543210" />
+             {errors.mobile && (
+              <p className="text-red-400 text-sm mt-1">{errors.mobile}</p>
+            )}
           </div>
 
           <div>
             <label className="block text-sm mb-1">Email ID</label>
-            <input name="emailId" type="text" onChange={handleChange} className="w-full p-2 rounded-md bg-purple-700 text-white border border-purple-600" placeholder="ABCDE1234F" />
+            <input name="emailId" type="text" onChange={handleChange} className="w-full p-2 rounded-md bg-purple-700 text-white border border-purple-600" placeholder="ganesha27@gmail.com" />
           </div>
 
           <div>

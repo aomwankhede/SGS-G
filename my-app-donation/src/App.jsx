@@ -7,6 +7,9 @@ import Home from './components/Home';
 import AdminDashboard from './components/Admin/AdminDashboard';
 import DonationForm from './components/Donar/DonationForm';
 import { Toaster } from 'react-hot-toast';
+import AdminLogin from './components/Admin/AdminLogin';
+import ProtectedRoute from './components/ProtectedRoute';
+
 const App = () => {
   return (
     <Router>
@@ -14,7 +17,8 @@ const App = () => {
         <Toaster position="top-center" reverseOrder={false} />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path='/admin-login' element={<AdminLogin/>}/>
+          <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
           <Route path="/donar" element={<DonationForm />} />
         </Routes>
       </div>

@@ -116,7 +116,10 @@ const AdminDashboard = () => {
         {filteredDonars.map((donar) => (
           <div
             key={donar._id}
-            className="w-full bg-gradient-to-br from-purple-500 to-white bg-transparent text-white rounded-2xl p-6 shadow-lg flex justify-between items-center mb-6"
+            className={`w-full 
+            ${donar.status === true ? 'from-green-500' : 'from-red-500'} 
+            to-white bg-gradient-to-br text-white rounded-2xl p-6 shadow-lg 
+            flex justify-between items-center mb-6`}
           >
             {/* Donor Info Section */}
             <div>
@@ -137,10 +140,16 @@ const AdminDashboard = () => {
                     {new Date(donar.date).toLocaleString()}
                   </span>
                 </p>
-                <p>
+                {/* <p>
                   📌 Status:{' '}
                   <span className="text-white font-semibold">
                     {donar.status || 'Pending'}
+                  </span>
+                </p> */}
+                <p>
+                  Transaction Id:{''}
+                  <span className='text-white'>
+                    {donar.transactionId}
                   </span>
                 </p>
               </div>

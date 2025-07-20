@@ -13,47 +13,47 @@ const Admin  = require('./models/admin');
 const PDFDocument = require('pdfkit');
 
 
- 
 
-async function sendCertificateByEmail(
-  body,
-  transactionId,
-  senderEmailId,
-  subject
-) {
-  // Step 1: Create PDF certificate
-  console.log('In it!!');
-  const certFolder = path.join(__dirname, 'certificate');
-  if (!fs.existsSync(certFolder)) {
-    fs.mkdirSync(certFolder);
-  }
 
-  const pdfPath = path.join(certFolder, `${transactionId}.pdf`);
-  const doc = new PDFDocument();
+const puppeteer = require('puppeteer');
+const generateCertificateHTML = require('./generateCertificateHTML'); // path may vary
 
-  doc.pipe(fs.createWriteStream(pdfPath));
+function getBase64Image(relativePath) {
+  const filePath = path.join(__dirname, 'public', relativePath);
+  const fileData = fs.readFileSync(filePath);
+  return `data:image/png;base64,${fileData.toString('base64')}`;
+}
 
-  // Design the certificate (you can modify layout, fonts, etc.)
-  doc.fontSize(26).text('Certificate of Donation', { align: 'center' });
-  doc.moveDown();
-  doc.fontSize(14).text(`Transaction ID: ${transactionId}`);
-  doc.moveDown();
-  doc.text(`Details: ${body}`);
-  doc.moveDown();
-  doc.text('Thank you for your generous contribution!', { align: 'center' });
 
-  doc.end();
+async function sendCertificateByEmail(donar, transactionId, email, subject) {
+  // Step 1: Generate HTML
+  console.log(donar,"donar");
+  const html = generateCertificateHTML({
+    name:donar.name,
+    email: donar.emailId,
+    mobile: donar.mobile,
+    PAN: donar.PAN,
+    address: donar.address,
+    amount: donar.amount,
+    amount_in_words: donar.amount_in_words,
+    payment_method: donar.payment_method,
+    transactionId: donar.transactionId,
+    date: donar.date,
+    _id: donar._id,
+    logoUrl:"./logo.png"
+});
 
-  // Wait for the PDF to finish writing
-  // await new Promise((resolve) => doc.on('finish', resolve));
+  // Step 2: Use Puppeteer to convert HTML to PDF
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.setContent(html, { waitUntil: 'networkidle0' });
 
-  console.log(
-    'Created Certificate',
-    process.env.SERVER_EMAIL,
-    process.env.SERVER_EMAIL_PASS
-  );
+  const pdfPath = path.join(__dirname, 'certificate', `${transactionId}.pdf`);
+  await page.pdf({ path: pdfPath, format: 'A4', printBackground: true });
 
-  // Step 2: Send email using nodemailer
+  await browser.close();
+
+  // Step 3: Send email with nodemailer
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -64,9 +64,9 @@ async function sendCertificateByEmail(
 
   const mailOptions = {
     from: process.env.SERVER_EMAIL,
-    to: senderEmailId,
+    to: email,
     subject: subject,
-    text: `Hello,\n\nPlease find attached your certificate.\n\n${body}`,
+    text: `Dear ${donar.name},\n\nPlease find your donation certificate attached.\n\nThank you!`,
     attachments: [
       {
         filename: `${transactionId}.pdf`,
@@ -75,15 +75,79 @@ async function sendCertificateByEmail(
     ],
   };
 
-  try {
-    console.log('Sending Certificate to ');
-    console.log(senderEmailId);
-    await transporter.sendMail(mailOptions);
-    console.log(`Certificate sent to ${senderEmailId}`);
-  } catch (err) {
-    console.error('Error sending email:', err);
-  }
+  await transporter.sendMail(mailOptions);
+  console.log(`✅ Certificate sent to ${email}`);
 }
+
+// async function sendCertificateByEmail(
+//   body,
+//   transactionId,
+//   senderEmailId,
+//   subject
+// ) {
+//   // Step 1: Create PDF certificate
+//   console.log('In it!!');
+//   const certFolder = path.join(__dirname, 'certificate');
+//   if (!fs.existsSync(certFolder)) {
+//     fs.mkdirSync(certFolder);
+//   }
+
+//   const pdfPath = path.join(certFolder, `${transactionId}.pdf`);
+//   const doc = new PDFDocument();
+
+//   doc.pipe(fs.createWriteStream(pdfPath));
+
+//   // Design the certificate (you can modify layout, fonts, etc.)
+//   doc.fontSize(26).text('Certificate of Donation', { align: 'center' });
+//   doc.moveDown();
+//   doc.fontSize(14).text(`Transaction ID: ${transactionId}`);
+//   doc.moveDown();
+//   doc.text(`Details: ${body}`);
+//   doc.moveDown();
+//   doc.text('Thank you for your generous contribution!', { align: 'center' });
+
+//   doc.end();
+
+//   // Wait for the PDF to finish writing
+//   // await new Promise((resolve) => doc.on('finish', resolve));
+
+//   console.log(
+//     'Created Certificate',
+//     process.env.SERVER_EMAIL,
+//     process.env.SERVER_EMAIL_PASS
+//   );
+
+//   // Step 2: Send email using nodemailer
+//   const transporter = nodemailer.createTransport({
+//     service: 'gmail',
+//     auth: {
+//       user: process.env.SERVER_EMAIL,
+//       pass: process.env.SERVER_EMAIL_PASS,
+//     },
+//   });
+
+//   const mailOptions = {
+//     from: process.env.SERVER_EMAIL,
+//     to: senderEmailId,
+//     subject: subject,
+//     text: `Hello,\n\nPlease find attached your certificate.\n\n${body}`,
+//     attachments: [
+//       {
+//         filename: `${transactionId}.pdf`,
+//         path: pdfPath,
+//       },
+//     ],
+//   };
+
+//   try {
+//     console.log('Sending Certificate to ');
+//     console.log(senderEmailId);
+//     await transporter.sendMail(mailOptions);
+//     console.log(`Certificate sent to ${senderEmailId}`);
+//   } catch (err) {
+//     console.error('Error sending email:', err);
+//   }
+// }
 
 //Connect to database
 const conn = async () => {
@@ -101,6 +165,7 @@ const app = express();
 app.use(express.json()); 
 app.use(cors());
 
+// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.get('/', (req, res) => {
@@ -108,13 +173,46 @@ app.get('/', (req, res) => {
 });
 
 // CREATE Donation
+// router.post("/", upload.single("transactionImage"), async (req, res) => {
+//   try {
+//     if (!req.file) {
+//       return res.status(400).json({ message: "No file uploaded" });
+//     }
+//     const donation = await Donation.create({
+//       ...req.body,
+//       transactionImage:req.file.filename
+//     });
+//     res.status(201).json({message:"Donar added successfully" , donation});
+//   } catch (err) {
+//     console.error("Upload error:", err);
+//     res.status(500).json({ message: err.message });
+//   }
+// });
+
+app.get('/donar/:d_id', async (req, res) => {
+  try {
+    const d_id = req.params.d_id;
+    const response = await Donation.findById(d_id);
+
+    if (!response) {
+      return res.status(404).json({ message: 'Donor not found' });
+    }
+
+    return res.status(200).json(response);
+  } catch (error) {
+    console.log("Error in getting donor data:", error);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
+//aom's code.
 app.post('/donations', upload.single('transactionImage'), async (req, res) => {
   try {
     const data = {
       ...req.body,
       transactionImage: req.file ? `/uploads/${req.file.filename}` : undefined,
     };
-
     const donation = new Donation(data);
     await donation.save();
     res.status(201).json(donation);
@@ -136,21 +234,32 @@ app.get('/donations', async (req, res) => {
 
 app.put('/donations/:id/verify', async (req, res) => {
   try {
+    // Step 1: Find the donation by ID
     const donation = await Donation.findById(req.params.id);
-    if (!donation) return res.status(404).json({ error: 'Donation not found' });
+    if (!donation) {
+      return res.status(404).json({ error: 'Donation not found' });
+    }
+
+    // Step 2: Mark it as verified
     donation.isVerified = true;
     await donation.save();
-    sendCertificateByEmail(
-      'Thank you for you donation',
+
+    // Step 3: Send the PDF certificate
+    await sendCertificateByEmail(
+      donation, // Pass full donar object
       donation.transactionId,
       donation.emailId,
-      'Om Ganeshay Namah!!'
+      'Om Ganeshay Namah!! – Your Donation Certificate'
     );
-    res.status(200).json(donation);
+
+    // Step 4: Respond back to frontend
+    res.status(200).json({ message: 'Donation verified and certificate sent.', donation });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('Error in /donations/:id/verify:', err);
+    res.status(500).json({ error: 'Server error while verifying donation.' });
   }
 });
+
 
 // UPDATE Donation
 app.put(

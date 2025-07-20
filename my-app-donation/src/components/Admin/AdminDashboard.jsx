@@ -36,8 +36,9 @@ const AdminDashboard = () => {
     setFilteredDonars(filtered);
   }, [searchTerm, donars]);
 
-  // Handle donation verification
+
   const handleVerify = async (id) => {
+    alert("Are you sure you want to verify this donation");
     try {
       await axios.put(`/donations/${id}/verify`);
       const updated = donars.map((d) =>
@@ -54,6 +55,15 @@ const AdminDashboard = () => {
     const url = `http://localhost:5000/uploads/${transactionId}.png`;
     window.open(url, '_blank');
   };
+
+  const handleSendPDF=async()=>{
+    try{
+
+    }
+    catch(error){
+      console.log("error in sending pdf");
+    }
+  }
 
   const verifiedDonations = donars.filter((d) => d.isVerified);
   const totalVerifiedAmount = verifiedDonations.reduce(
@@ -157,6 +167,7 @@ const AdminDashboard = () => {
 
             {/* Action Buttons */}
             <div className="flex gap-3 items-end">
+              
               {!donar.isVerified && (
                 <button
                   onClick={() => handleVerify(donar._id)}
@@ -171,6 +182,15 @@ const AdminDashboard = () => {
               >
                 👁️ View
               </button>
+
+              {donar.isVerified && (
+                <button
+                  onClick={() => handleSendPDF(donar?.email)}
+                  className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-xl shadow-md transition"
+                >
+                  📩 Send PDF
+                </button>
+              )}
             </div>
           </div>
         ))}

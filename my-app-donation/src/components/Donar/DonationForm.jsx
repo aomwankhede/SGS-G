@@ -17,7 +17,7 @@ const DonationForm = () => {
     instrumentDate: '',
     transactionImage: null
   });
-
+  const [donarData,setDonorData] = useState({});
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'transactionImage') {
@@ -34,7 +34,9 @@ const DonationForm = () => {
       for (let key in formData) {
         data.append(key, formData[key]);
       }
-      await axios.post('/donations', data);
+      
+      const response =  await axios.post('/donations', data);
+      setDonorData(response.data);
       alert('Donation submitted successfully');
     } catch (err) {
       console.error(err);
@@ -49,7 +51,7 @@ const DonationForm = () => {
 
       </div>
       {/* <div className='h-[20rem] bg-black w-[20rem]'></div> */}
-      <form onSubmit={handleSubmit} className="bg-purple-800 bg-opacity-30 backdrop-blur-md shadow-xl rounded-xl p-8 w-full max-w-2xl text-white">
+      <form onSubmit={handleSubmit} encType="multipart/form-data" className="bg-purple-800 bg-opacity-30 backdrop-blur-md shadow-xl rounded-xl p-8 w-full max-w-2xl text-white">
         <div className="flex justify-center mb-4">
           <div className="bg-pink-500  rounded-full">
             <span className="text-white text-2xl"><img src='logo.jpeg' className='h-30 w-30 object-cover rounded-full'/></span>
@@ -134,7 +136,7 @@ const DonationForm = () => {
 
           <div className="md:col-span-2">
             <label className="block text-sm mb-1">Transaction Screenshot</label>
-            <input name="transactionImage" type="file" accept="image/png, image/jpeg, image/jpg" onChange={handleChange} className="w-full p-2 rounded-md bg-purple-700 text-white border border-purple-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-pink-600 file:text-white" />
+            <input name="transactionImage" type="file" accept=".png, .jpg, .jpeg" onChange={handleChange} className="w-full p-2 rounded-md bg-purple-700 text-white border border-purple-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-pink-600 file:text-white" />
           </div>
         </div>
 

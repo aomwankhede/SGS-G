@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import path from "path"
 
 axios.defaults.baseURL = 'http://localhost:5000';
 
@@ -20,7 +21,7 @@ const AdminDashboard = () => {
       .get('/donations')
       .then((res) => {
         setDonar(res.data);
-        setFilteredDonars(res.data?.filter((donation)=>donation.isVerified));
+        setFilteredDonars(res.data?.filter((donation) => donation.isVerified));
       })
       .catch((err) => console.error('Error fetching donations:', err));
   }, []);
@@ -36,12 +37,13 @@ const AdminDashboard = () => {
     setFilteredDonars(filtered);
   }, [searchTerm, donars]);
 
-  // Handle donation verification
+
   const handleVerify = async (id) => {
+    alert("Are you sure you want to verify this donation");
     try {
       await axios.put(`/donations/${id}/verify`);
       const updated = donars.map((d) =>
-        d._id === id ? { ...d, isVerified:true } : d
+        d._id === id ? { ...d, isVerified: true } : d
       );
       setDonar(updated);
       setFilteredDonars(updated);
@@ -50,9 +52,23 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleView = (transactionId) => {
-    const url = `http://localhost:5000/uploads/${transactionId}.png`;
-    window.open(url, '_blank');
+  const handleView = async (transactionId) => {
+    const extensions = ['png', 'jpg', 'jpeg'];
+
+    for (let ext of extensions) {
+      const url = `http://localhost:5000/uploads/${transactionId}.${ext}`;
+      try {
+        const response = await fetch(url, { method: 'HEAD' });
+        if (response.ok) {
+          window.open(url, '_blank');
+          return;
+        }
+      } catch (error) {
+        console.error(`Error checking file ${url}:`, error);
+      }
+    }
+
+    alert('No image found for this transaction.');
   };
 
   const verifiedDonations = donars.filter((d) => d.isVerified);
@@ -77,17 +93,6 @@ const AdminDashboard = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           value={searchTerm}
         />
-        <select className="px-4 py-2 rounded-lg bg-white/10 backdrop-blur-sm text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30 appearance-none">
-          <option className="bg-purple-700 text-white rounded-3xl">
-            All Status
-          </option>
-          <option className="bg-purple-700 text-white rounded-3xl">
-            Verified
-          </option>
-          <option className="bg-purple-700 text-white rounded-3xl">
-            Pending
-          </option>
-        </select>
       </div>
 
       {/* Stats */}
@@ -117,14 +122,14 @@ const AdminDashboard = () => {
           <div
             key={donar._id}
             className={`w-full 
-            ${donar.isVerified === true ? 'from-green-500' : 'from-red-500'} 
+            ${donar.isVerified === true ? 'from-green-500 to-transparent' : 'from-red-500 to-transparent'} 
             to-white bg-gradient-to-br text-white rounded-2xl p-6 shadow-lg 
             flex justify-between items-center mb-6`}
           >
             {/* Donor Info Section */}
             <div>
               <h1 className="text-2xl font-semibold">{donar.name}</h1>
-              <div className="mt-4 space-y-1 text-sm text-zinc-300">
+              <div className="mt-4 space-y-1 text-sm text-zinc-600">
                 <p>
                   📞 Mobile: <span className="text-white">{donar.mobile}</span>
                 </p>
@@ -147,16 +152,15 @@ const AdminDashboard = () => {
                   </span>
                 </p> */}
                 <p>
-                  Transaction Id:{''}
-                  <span className='text-white'>
-                    {donar.transactionId}
-                  </span>
+                 🧾Transaction Id:{''}
+                  <span className="text-white font-extrabold text-2xl">{donar.transactionId}</span>
                 </p>
               </div>
             </div>
 
             {/* Action Buttons */}
             <div className="flex gap-3 items-end">
+              
               {!donar.isVerified && (
                 <button
                   onClick={() => handleVerify(donar._id)}

@@ -7,6 +7,7 @@ const DonationForm = () => {
     title: '',
     name: '',
     mobile: '',
+    PAN:'',
     emailId: '',
     address: '',
     amount: '',
@@ -43,6 +44,10 @@ const DonationForm = () => {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row lg:flex-row gap-4 items-center justify-center bg-gradient-to-br from-indigo-800 via-purple-700 to-black p-4">
+
+      <div className='bg-black h-[20rem] w-[20rem]'>
+
+      </div>
       {/* <div className='h-[20rem] bg-black w-[20rem]'></div> */}
       <form onSubmit={handleSubmit} className="bg-purple-800 bg-opacity-30 backdrop-blur-md shadow-xl rounded-xl p-8 w-full max-w-2xl text-white">
         <div className="flex justify-center mb-4">
@@ -60,7 +65,7 @@ const DonationForm = () => {
               <option value="">Select</option>
               <option>Mr</option>
               <option>Ms</option>
-              <option>Dr</option>
+              <option>Mrs</option>
             </select>
           </div>
 
@@ -77,6 +82,18 @@ const DonationForm = () => {
           <div>
             <label className="block text-sm mb-1">Email ID</label>
             <input name="emailId" type="text" onChange={handleChange} className="w-full p-2 rounded-md bg-purple-700 text-white border border-purple-600" placeholder="ABCDE1234F" />
+          </div>
+
+          <div>
+            <label className='block text-sm mb-1'>PAN</label>
+            <input
+              name="PAN"
+              id="PAN"
+              type="text"
+              onChange={handleChange}
+              className="w-full p-2 rounded-md bg-purple-700 text-white border border-purple-600"
+              placeholder="ABCDE1234F"
+            />
           </div>
 
           <div className="md:col-span-2">
@@ -117,7 +134,7 @@ const DonationForm = () => {
 
           <div className="md:col-span-2">
             <label className="block text-sm mb-1">Transaction Screenshot</label>
-            <input name="transactionImage" type="file" onChange={handleChange} className="w-full p-2 rounded-md bg-purple-700 text-white border border-purple-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-pink-600 file:text-white" />
+            <input name="transactionImage" type="file" accept="image/png, image/jpeg, image/jpg" onChange={handleChange} className="w-full p-2 rounded-md bg-purple-700 text-white border border-purple-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-pink-600 file:text-white" />
           </div>
         </div>
 

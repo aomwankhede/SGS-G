@@ -20,7 +20,7 @@ const AdminDashboard = () => {
       .get('/donations')
       .then((res) => {
         setDonar(res.data);
-        setFilteredDonars(res.data);
+        setFilteredDonars(res.data?.filter((donation)=>donation.isVerified));
       })
       .catch((err) => console.error('Error fetching donations:', err));
   }, []);
@@ -41,7 +41,7 @@ const AdminDashboard = () => {
     try {
       await axios.put(`/donations/${id}/verify`);
       const updated = donars.map((d) =>
-        d._id === id ? { ...d, status: 'Verified' } : d
+        d._id === id ? { ...d, isVerified:true } : d
       );
       setDonar(updated);
       setFilteredDonars(updated);
@@ -55,7 +55,7 @@ const AdminDashboard = () => {
     window.open(url, '_blank');
   };
 
-  const verifiedDonations = donars.filter((d) => d.status === 'Verified');
+  const verifiedDonations = donars.filter((d) => d.isVerified);
   const totalVerifiedAmount = verifiedDonations.reduce(
     (sum, d) => sum + d.amount,
     0
@@ -116,7 +116,10 @@ const AdminDashboard = () => {
         {filteredDonars.map((donar) => (
           <div
             key={donar._id}
-            className="w-full bg-gradient-to-br from-purple-500 to-white bg-transparent text-white rounded-2xl p-6 shadow-lg flex justify-between items-center mb-6"
+            className={`w-full 
+            ${donar.isVerified === true ? 'from-green-500' : 'from-red-500'} 
+            to-white bg-gradient-to-br text-white rounded-2xl p-6 shadow-lg 
+            flex justify-between items-center mb-6`}
           >
             {/* Donor Info Section */}
             <div>
@@ -137,10 +140,16 @@ const AdminDashboard = () => {
                     {new Date(donar.date).toLocaleString()}
                   </span>
                 </p>
-                <p>
+                {/* <p>
                   📌 Status:{' '}
                   <span className="text-white font-semibold">
-                    {donar.status || 'Pending'}
+                    {donar.isVerified ? 'Verified':'Pending'}
+                  </span>
+                </p> */}
+                <p>
+                  Transaction Id:{''}
+                  <span className='text-white'>
+                    {donar.transactionId}
                   </span>
                 </p>
               </div>
@@ -148,7 +157,7 @@ const AdminDashboard = () => {
 
             {/* Action Buttons */}
             <div className="flex gap-3 items-end">
-              {donar.status !== 'Verified' && (
+              {!donar.isVerified && (
                 <button
                   onClick={() => handleVerify(donar._id)}
                   className="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-xl shadow-md transition"

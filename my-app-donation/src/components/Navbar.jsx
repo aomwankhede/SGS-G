@@ -7,12 +7,8 @@ const Navbar = () => {
         <span className="text-xl font-bold text-green-900"><img src='/logo.jpeg' className=' h-15 w-30 object-contain rounded-full'/></span>
       </div>
       <ul className="flex gap-6 text-gray-800 font-medium">
-        <li className="text-green-900 border-b-2 border-yellow-500 pb-1">Homepage</li>
-        <li>Technology</li>
-        <li>Ataraxis Breast</li>
-        <li>News & Resources</li>
-        <li>Careers</li>
-        <li>Portal</li>
+        <a href='/'><li className="text-green-900 border-b-2 border-yellow-500 pb-1">Homepage</li></a>
+       
       </ul>
       <button className="border border-yellow-500 text-yellow-600 px-4 py-1 rounded-lg font-medium hover:bg-yellow-50 transition">
         Contact Us

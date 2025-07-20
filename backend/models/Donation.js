@@ -16,6 +16,10 @@ const DonationSchema = new mongoose.Schema({
     required: true,
     match: /^[6-9]\d{9}$/, // Indian mobile number format
   },
+  PAN:{
+    type:String,
+    required:true
+  },
   emailId: {
     type: String,
     required: true,

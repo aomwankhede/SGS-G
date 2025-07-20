@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import path from "path"
 
 axios.defaults.baseURL = 'http://localhost:5000';
 
@@ -52,18 +53,22 @@ const AdminDashboard = () => {
   };
 
   const handleView = (transactionId) => {
-    const url = `http://localhost:5000/uploads/${transactionId}.png`;
+   
+    const extensions = ['.png', '.jpg', '.jpeg', '.webp'];
+
+    for (const ext of extensions) {
+      const filePath = path.join(imageDir, `${transactionId}${ext}`);
+      while (!fs.existsSync(filePath)) {
+        return `${baseURL}/uploads/${transactionId}${ext}`;
+      }
+    }
     window.open(url, '_blank');
-  };
-
-  const handleSendPDF=async()=>{
-    try{
-
-    }
-    catch(error){
-      console.log("error in sending pdf");
-    }
   }
+   
+    
+  
+
+ 
 
   const verifiedDonations = donars.filter((d) => d.isVerified);
   const totalVerifiedAmount = verifiedDonations.reduce(

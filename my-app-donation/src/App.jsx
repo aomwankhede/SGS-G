@@ -9,7 +9,7 @@ import DonationForm from './components/Donar/DonationForm';
 import { Toaster } from 'react-hot-toast';
 import AdminLogin from './components/Admin/AdminLogin';
 import ProtectedRoute from './components/ProtectedRoute';
-import Certificate from './components/Certificate';
+
 
 const App = () => {
   return (
@@ -21,7 +21,7 @@ const App = () => {
           <Route path='/admin-login' element={<AdminLogin/>}/>
           <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
           <Route path="/donar" element={<DonationForm />} />
-          <Route path='/certificate' element={<Certificate/>}/>
+          
         </Routes>
       </div>
     

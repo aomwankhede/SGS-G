@@ -1,8 +1,9 @@
-
 import React from 'react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+const baseURL = 'https://sgs-2jrp.onrender.com';
+const baseURL_local = 'http://localhost:5000';
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const AdminLogin = () => {
  const handleLogin = async (e) => {
   e.preventDefault();
   try {
-    const response = await fetch('https://sgs-2jrp.onrender.com/api/admin/login', {
+    const response = await fetch(`${baseURL_local}/api/admin/login`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'

@@ -12,7 +12,8 @@ const nodemailer = require('nodemailer');
 const Admin  = require('./models/admin');
 const PDFDocument = require('pdfkit');
 
-
+const deployedUrl = "";
+const localUrl = "";
 
 
 const puppeteer = require('puppeteer');

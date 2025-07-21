@@ -244,6 +244,8 @@ app.put('/donations/:id/verify', async (req, res) => {
     donation.isVerified = true;
     await donation.save();
 
+    console.log()
+
     // Step 3: Send the PDF certificate
     await sendCertificateByEmail(
       donation, // Pass full donar object

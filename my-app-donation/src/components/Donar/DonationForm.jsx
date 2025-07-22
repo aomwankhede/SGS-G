@@ -64,7 +64,7 @@ const DonationForm = () => {
     <div className="min-h-screen flex flex-col md:flex-row lg:flex-row gap-4 items-center justify-center bg-gradient-to-br from-indigo-800 via-purple-700 to-black p-4">
 
       <div className='bg-black h-[20rem] w-[20rem]'>
-        <img src='/qrcode.jpeg' className='object-contain'/>
+        <img src='/qrcode.jpeg' className='object-contain h-[20rem] w-[30rem]'/>
       </div>
       {/* <div className='h-[20rem] bg-black w-[20rem]'></div> */}
       <form onSubmit={handleSubmit} encType="multipart/form-data" className="bg-purple-800 bg-opacity-30 backdrop-blur-md shadow-xl rounded-xl p-8 w-full max-w-2xl text-white">

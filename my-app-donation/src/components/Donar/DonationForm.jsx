@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import axios from 'axios';
-// axios.defaults.baseURL = 'http://localhost:5000';
-axios.defaults.baseURL = 'https://sgs-2jrp.onrender.com';
+import Acknowledgement from './Acknowledgement';
+
+axios.defaults.baseURL = 'http://localhost:5000';
+// axios.defaults.baseURL = 'https://sgs-2jrp.onrender.com';
 
 const DonationForm = () => {
   const [formData, setFormData] = useState({
@@ -46,10 +48,12 @@ const DonationForm = () => {
       for (let key in formData) {
         data.append(key, formData[key]);
       }
+
       
       const response =  await axios.post('/donations', data);
       setDonorData(response.data);
       alert('Donation submitted successfully');
+      <Acknowledgement donarData={donarData}/>
     } catch (err) {
       console.error(err);
       alert('Error submitting donation');

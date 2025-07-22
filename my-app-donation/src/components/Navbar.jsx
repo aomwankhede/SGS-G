@@ -26,6 +26,10 @@ const Navbar = () => {
       <ul className="flex gap-6 text-gray-800 font-medium">
         <a href='/'><li id="homepage" className="text-green-900 border-b-2 border-yellow-500 pb-1">Homepage</li></a>
       </ul>
+      <ul className="flex gap-6 text-gray-800 font-medium">
+        <a href='/admin'><li id="homepage" className="text-green-900 border-b-2 border-yellow-500 pb-1">Admin</li></a>
+      </ul>
+
       {token ? <button className='bg-red-500 rounded-2xl px-4 py-2 text-white' onClick={handleLogout}>Logout</button> : <></>}
       <button className="border border-yellow-500 text-yellow-600 px-4 py-1 rounded-lg font-medium hover:bg-yellow-50 transition">
         Contact Us

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 const baseURL = 'https://sgs-2jrp.onrender.com';
-const baseURL_local = 'http://localhost:5000';
+// const baseURL = 'http://localhost:5000';
 
 const AdminLogin = () => {
   const navigate = useNavigate();

@@ -12,22 +12,22 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Acknowledgement from './components/Donar/Acknowledgement';
 
 
-const App = () => {
-  return (
-    <Router>
-      <div className="min-h-screen bg-amber-400 p-2">
-        <Toaster position="top-center" reverseOrder={false} />
-        <Routes>
-          <Route path='/admin-login' element={<AdminLogin/>}/>
-          <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-          <Route path="/" element={<DonationForm />} />
-          <Route path="/donation-ack" element={<Acknowledgement/>} />
-          
-        </Routes>
-      </div>
-    
-    </Router>
-  );
-};
+  const App = () => {
+    return (
+      <Router>
+        <div className="min-h-screen bg-amber-400 p-2">
+          <Toaster position="top-center" reverseOrder={false} />
+          <Routes>
+            <Route path='/admin-login' element={<AdminLogin/>}/>
+            <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/" element={<DonationForm />} />
+            <Route path="/donation-ack" element={<Acknowledgement/>} />
+            
+          </Routes>
+        </div>
+      
+      </Router>
+    );
+  };
 
 export default App;

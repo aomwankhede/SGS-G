@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import Acknowledgement from './Acknowledgement';
+import { toWords } from "number-to-words";
 
 // axios.defaults.baseURL = 'http://localhost:5000';
 axios.defaults.baseURL = 'https://sgs-2jrp.onrender.com';
@@ -20,11 +21,15 @@ const DonationForm = () => {
     instrumentDate: '',
     transactionImage: null
   });
+  const [amount, setAmount] = useState("");
+  const [inWords, setInWords] = useState("");
   const [donarData,setDonorData] = useState({});
   const [errors, setErrors] = useState({ mobile: '' });
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+
+    // Handle mobile validation
     if (name === 'mobile') {
       const isValidMobile = /^\d{10}$/.test(value);
       if (!isValidMobile) {
@@ -34,12 +39,26 @@ const DonationForm = () => {
       }
     }
 
+    // Handle image file
     if (name === 'transactionImage') {
       setFormData({ ...formData, transactionImage: files[0] });
-    } else {
+    } 
+    // Handle amount and auto-generate words
+    else if (name === 'amount') {
+      const numericAmount = Number(value);
+      const inWords = value ? toWords(numericAmount) + " only" : "";
+      setFormData({ 
+        ...formData, 
+        amount: value,
+        amount_in_words: inWords
+      });
+    } 
+    // Other inputs
+    else {
       setFormData({ ...formData, [name]: value });
     }
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -154,7 +173,7 @@ const DonationForm = () => {
 
           <div className="md:col-span-2">
             <label className="block text-sm mb-1">Sum of Rupees (in words)</label>
-            <input name="amount_in_words" type="text" onChange={handleChange} className="w-full p-2 rounded-md bg-purple-700 text-white border border-purple-600" placeholder="One Thousand Only" />
+            <input name="amount_in_words" type="text" onChange={handleChange} value={formData.amount_in_words}className="w-full p-2 rounded-md bg-purple-700 text-white border border-purple-600" placeholder="One Thousand Only" />
           </div>
 
           <div className="md:col-span-2">

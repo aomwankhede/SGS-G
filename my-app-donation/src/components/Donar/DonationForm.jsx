@@ -82,13 +82,27 @@ const DonationForm = () => {
   return (
     <div className="min-h-screen flex flex-col md:flex-row lg:flex-row gap-4 items-center justify-center bg-gradient-to-br from-indigo-800 via-purple-700 to-black p-4">
 
-      <div className="h-[20rem] w-[20rem] flex items-center justify-center rounded-xl shadow-lg p-2">
-        <img
-          src="/qrcode.jpeg"
-          alt="QR Code"
-          className="object-contain h-full w-full rounded-md"
-        />
+     <div className="w-full max-w-sm bg-white rounded-2xl shadow-2xl p-4 transition-transform hover:scale-105 hover:shadow-amber-500/50 duration-300">
+        <div className="w-full h-64 bg-gray-100 rounded-xl flex items-center justify-center shadow-md hover:shadow-lg transition">
+          <img
+            src="/qrcode.png"
+            alt="QR Code"
+            className="object-contain h-full w-full p-4 rounded-xl"
+          />
+        </div>
+
+        <div className="text-center mt-4 space-y-2">
+          <h2 className="text-lg font-semibold text-gray-800 shadow-sm">GPay, PhonePe, Paytm Accepted</h2>
+          <h3 className="text-sm text-gray-600 shadow-sm">Scan & donate using any UPI app</h3>
+        </div>
+
+        <div className="flex items-center justify-center gap-4 mt-4">
+          <img src="/gpay.jpg" alt="GPay" className="h-8 w-auto drop-shadow-md hover:scale-110 transition" />
+          <img src="/phonepay.png" alt="PhonePe" className="h-8 w-auto drop-shadow-md hover:scale-110 transition" />
+          <img src="/paytm.png" alt="Paytm" className="h-8 w-auto drop-shadow-md hover:scale-110 transition" />
+        </div>
       </div>
+
       {/* <div className='h-[20rem] bg-black w-[20rem]'></div> */}
       <form onSubmit={handleSubmit} encType="multipart/form-data" className="bg-purple-800 bg-opacity-30 backdrop-blur-md shadow-xl rounded-xl p-8 w-full max-w-2xl text-white">
         <div className="flex justify-center mb-4">

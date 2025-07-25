@@ -103,17 +103,20 @@ const AdminDashboard = () => {
             {donars.length}
           </p>
         </div>
-        <div className="rounded-lg border border-green-500 bg-gradient-to-br from-green-900 to-transparent p-4">
-          <p className="text-sm text-white/70 mb-1">Verified</p>
-          <p className="text-3xl font-semibold text-green-400">
-            {verifiedDonations.length}
-          </p>
-        </div>
-        <div className="rounded-lg border border-pink-500 bg-gradient-to-br from-pink-900 to-transparent p-4">
-          <p className="text-sm text-white/70 mb-1">Total Amount (Verified)</p>
-          <p className="text-3xl font-semibold text-pink-300">
-            ₹{totalVerifiedAmount}
-          </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="rounded-lg border border-green-500 bg-gradient-to-br from-green-900 to-transparent p-4">
+            <p className="text-sm text-white/70 mb-1">Verified</p>
+            <p className="text-3xl font-semibold text-green-400">
+              {verifiedDonations.length}
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-pink-500 bg-gradient-to-br from-pink-900 to-transparent p-4">
+            <p className="text-sm text-white/70 mb-1">Total Amount (Verified)</p>
+            <p className="text-3xl font-semibold text-pink-300">
+              ₹{totalVerifiedAmount}
+            </p>
+          </div>
         </div>
       </div>
 
@@ -159,7 +162,7 @@ const AdminDashboard = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-3 items-end">
+            <div className="flex-col md:flex lg:flex gap-3 ">
               {!donar.isVerified && (
                 <button
                   onClick={() => handleVerify(donar._id)}

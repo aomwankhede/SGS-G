@@ -2,10 +2,11 @@ import { useState } from 'react';
 import axios from 'axios';
 import Acknowledgement from './Acknowledgement';
 import { toWords } from "number-to-words";
+import { useNavigate } from 'react-router-dom';
 
 // axios.defaults.baseURL = 'http://localhost:5000';
 axios.defaults.baseURL = 'https://sgs-2jrp.onrender.com';
-
+const navigate = useNavigate();
 const DonationForm = () => {
   const [formData, setFormData] = useState({
     title: '',
@@ -72,6 +73,7 @@ const DonationForm = () => {
       const response =  await axios.post('/donations', data);
       setDonorData(response.data);
       alert('Donation submitted successfully');
+      navigate('/donation-ack');
       <Acknowledgement donarData={donarData}/>
     } catch (err) {
       console.error(err);

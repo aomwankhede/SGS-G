@@ -1,6 +1,9 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 
-const Acknowledgement = ({ donarData }) => {
+const Acknowledgement = () => {
+  const location = useLocation();
+  const donarData = location.state?.donarData;
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#f9fafb] to-[#e2e8f0] p-6">
       <div className="bg-gradient-to-br from-green-100 to-green-300 rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">

@@ -6,8 +6,9 @@ import { useNavigate } from 'react-router-dom';
 
 // axios.defaults.baseURL = 'http://localhost:5000';
 axios.defaults.baseURL = 'https://sgs-2jrp.onrender.com';
-const navigate = useNavigate();
+
 const DonationForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: '',
     name: '',
@@ -72,9 +73,9 @@ const DonationForm = () => {
       
       const response =  await axios.post('/donations', data);
       setDonorData(response.data);
+      console.log("Donar data going to ackwonledgement ", response.data);
       alert('Donation submitted successfully');
-      navigate('/donation-ack');
-      <Acknowledgement donarData={donarData}/>
+      navigate('/donation-ack', { state: { donarData: response.data } });
     } catch (err) {
       console.error(err);
       alert('Error submitting donation');
